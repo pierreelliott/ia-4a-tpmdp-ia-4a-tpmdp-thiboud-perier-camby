@@ -1,13 +1,10 @@
 package agent.planningagent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import util.HashMapUtil;
 
-import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import environnement.Action;
 import environnement.Etat;
@@ -69,11 +66,49 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		//lorsque delta < epsilon 
 		//Dans cette classe, il  faut juste mettre a jour delta 
 		this.delta=0.0;
+		HashMap<Etat, Double> newV = this.V.keySet().stream().collect(Collectors.toMap(etat -> etat, etat -> new Double(this.V.get(etat)), (a, b) -> b, HashMap::new));
 		//*** VOTRE CODE
-		
-		
+		List<Double> diffOldAndNew = new ArrayList<>();
+
+		double valueEtat, valueEtatSuivant, valueNewEtat;
+		List<Double> valuesEtatSuivant;
+		Map<Etat, Double> etatsTransition;
+		for (Etat etat : this.getMdp().getEtatsAccessibles()) {
+			valueEtat = this.V.get(etat);
+			if (this.getMdp().estAbsorbant(etat)) {
+				continue;
+			}
+
+			valuesEtatSuivant = new ArrayList<>();
+			for (Action action : this.getMdp().getActionsPossibles(etat)) {
+				valueEtatSuivant = 0.0;
+				try {
+					etatsTransition = this.getMdp().getEtatTransitionProba(etat, action);
+					for (Etat etatTransition : etatsTransition.keySet()) {
+						valueEtatSuivant += (this.gamma * this.V.get(etatTransition)
+									+ this.getMdp().getRecompense(etat, action, etatTransition))
+								* etatsTransition.get(etatTransition);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				valuesEtatSuivant.add(valueEtatSuivant);
+			}
+
+			valueNewEtat = Collections.max(valuesEtatSuivant);
+			newV.put(etat, valueNewEtat);
+			diffOldAndNew.add(Math.abs(valueEtat - valueNewEtat));
+		}
+
+		this.delta = Collections.max(diffOldAndNew);
+
+		this.V = newV;
+
 		//mise a jour de vmax et vmin utilise pour affichage du gradient de couleur:
-		//vmax est la valeur max de V pour tout s 
+		//vmax est la valeur max de V pour tout s
+		Set<Etat> keyset = this.V.keySet();
+		this.vmax = Collections.max(this.V.values());
+		this.vmin = Collections.min(this.V.values());
 		//vmin est la valeur min de V pour tout s
 		// ...
 		
@@ -136,6 +171,9 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		super.reset();
                 //reinitialise les valeurs de V 
 		//*** VOTRE CODE
+		for (Etat etat : this.V.keySet()) {
+			this.V.put(etat, 0.);
+		}
 		
 		this.notifyObs();
 	}
