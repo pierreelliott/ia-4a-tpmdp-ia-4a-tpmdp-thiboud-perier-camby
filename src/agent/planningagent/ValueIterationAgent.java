@@ -125,7 +125,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	public Action getAction(Etat e) {
 		//*** VOTRE CODE
 		Action action;
-		List<Action> actions = this.mdp.getActionsPossibles(e);
+		List<Action> actions = getPolitique(e);
 
 		if(actions.isEmpty()) {
 			action = Action2D.NONE;
@@ -171,8 +171,11 @@ public class ValueIterationAgent extends PlanningValueAgent{
 			double score = 0.;
 
 			try {
+				Map<Etat, Double> etatsTransition = this.getMdp().getEtatTransitionProba(_e, a);
 				for (Etat e : this.mdp.getEtatTransitionProba(_e, a).keySet()){
-					score += this.mdp.getRecompense(_e, a, e);
+					score += (this.gamma * this.V.get(e)
+							+ this.getMdp().getRecompense(_e, a, e))
+							* etatsTransition.get(e);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -182,6 +185,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
 				first = false;
 				returnactions.clear();
 				returnactions.add(a);
+				max = score;
 			}
 			else if (score == max){
 				returnactions.add(a);
