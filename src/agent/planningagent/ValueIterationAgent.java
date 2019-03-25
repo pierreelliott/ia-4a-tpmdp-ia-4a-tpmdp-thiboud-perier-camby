@@ -165,10 +165,10 @@ public class ValueIterationAgent extends PlanningValueAgent{
 
 
 		boolean first = true;
-		int max = 0;
+		double max = 0.;
 
 		for (Action a : actionsPossibles){
-			int score = 0;
+			double score = 0.;
 
 			try {
 				for (Etat e : this.mdp.getEtatTransitionProba(_e, a).keySet()){
@@ -179,6 +179,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
 			}
 
 			if (score > max || first){
+				first = false;
 				returnactions.clear();
 				returnactions.add(a);
 			}
