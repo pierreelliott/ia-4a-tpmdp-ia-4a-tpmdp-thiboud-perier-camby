@@ -89,8 +89,17 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	@Override
 	public Action getAction(Etat e) {
 		//*** VOTRE CODE
-		
-		return Action2D.NONE;
+		Action action;
+		List<Action> actions = this.mdp.getActionsPossibles(e);
+
+		if(actions.isEmpty()) {
+			action = Action2D.NONE;
+		} else {
+			int r = rand.nextInt(actions.size());//random entre 0 inclu et param exlu
+			action = actions.get(r);
+		}
+
+		return action;
 		
 	}
 
@@ -100,8 +109,9 @@ public class ValueIterationAgent extends PlanningValueAgent{
                  //Renvoie la valeur de l'Etat _e, c'est juste un getter, ne calcule pas la valeur ici
                  //(la valeur est calculee dans updateV
 		//*** VOTRE CODE
+		double value = this.V.get(_e);
 		
-		return 0.0;
+		return value;
 	}
 	/**
 	 * renvoi action(s) de plus forte(s) valeur(s) dans etat 
@@ -110,6 +120,8 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	@Override
 	public List<Action> getPolitique(Etat _e) {
 		//*** VOTRE CODE
+		List<Action> actionsPossibles = this.mdp.getActionsPossibles(_e);
+
 		
 		// retourne action de meilleure valeur dans _e selon V, 
 		// retourne liste vide si aucune action legale (etat absorbant)
