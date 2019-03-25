@@ -157,10 +157,35 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		//*** VOTRE CODE
 		List<Action> actionsPossibles = this.mdp.getActionsPossibles(_e);
 
-		
-		// retourne action de meilleure valeur dans _e selon V, 
-		// retourne liste vide si aucune action legale (etat absorbant)
 		List<Action> returnactions = new ArrayList<Action>();
+
+		if (actionsPossibles.size() == 0 ) {
+			return returnactions;
+		}
+
+
+		boolean first = true;
+		int max = 0;
+
+		for (Action a : actionsPossibles){
+			int score = 0;
+
+			try {
+				for (Etat e : this.mdp.getEtatTransitionProba(_e, a).keySet()){
+					score += this.mdp.getRecompense(_e, a, e);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (score > max || first){
+				returnactions.clear();
+				returnactions.add(a);
+			}
+			else if (score == max){
+				returnactions.add(a);
+			}
+		}
 	
 		return returnactions;
 		
