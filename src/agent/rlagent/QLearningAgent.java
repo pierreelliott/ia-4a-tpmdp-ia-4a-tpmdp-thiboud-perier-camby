@@ -1,8 +1,6 @@
 package agent.rlagent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import javafx.util.Pair;
 import environnement.Action;
@@ -27,7 +25,7 @@ public class QLearningAgent extends RLAgent {
 	 * 
 	 * @param alpha
 	 * @param gamma
-	 * @param Environnement
+	 * @param _env
 	 */
 	public QLearningAgent(double alpha, double gamma,
 			Environnement _env) {
@@ -82,7 +80,10 @@ public class QLearningAgent extends RLAgent {
 	@Override
 	public void setQValeur(Etat e, Action a, double d) {
 		//*** VOTRE CODE
-		
+
+		HashMap<Action, Double> mapEtat = this.qvaleurs.computeIfAbsent(e, k -> new HashMap<>());
+
+		mapEtat.put(a, d);
 		
 		// mise a jour vmax et vmin pour affichage du gradient de couleur:
 				//vmax est la valeur de max pour tout s de V
@@ -109,6 +110,14 @@ public class QLearningAgent extends RLAgent {
 			System.out.println("QL mise a jour etat "+e+" action "+a+" etat' "+esuivant+ " r "+reward);
 
 		//*** VOTRE CODE
+		// (1−αk)Q(s,a)+αk[r+γ max_b( Q(s',b) )]
+		
+		double oldValue = this.getQValeur(e, a);
+		double max_b = this.getValeur(esuivant);
+		double newValue = (1 - this.alpha) * oldValue
+				+ this.alpha * (reward + this.gamma * max_b);
+
+		this.setQValeur(e, a, newValue);
 	}
 
 	@Override
