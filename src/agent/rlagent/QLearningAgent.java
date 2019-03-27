@@ -50,10 +50,23 @@ public class QLearningAgent extends RLAgent {
 		// retourne action de meilleures valeurs dans e selon Q : utiliser getQValeur()
 		// retourne liste vide si aucune action legale (etat terminal)
 		List<Action> returnactions = new ArrayList<Action>();
-		if (this.getActionsLegales(e).size() == 0){//etat  absorbant; impossible de le verifier via environnement
+		List<Action> actionsLegales = this.getActionsLegales(e);
+		if (actionsLegales.size() == 0){//etat  absorbant; impossible de le verifier via environnement
 			System.out.println("aucune action legale");
 			return new ArrayList<Action>();
 			
+		}
+
+		double max = Double.NEGATIVE_INFINITY, qvaleur;
+		for (Action action : actionsLegales) {
+			qvaleur = getQValeur(e, action);
+			max = (qvaleur > max) ? qvaleur : max;
+		}
+		
+		for (Action action : actionsLegales) {
+			if(getQValeur(e, action) == max) {
+				returnactions.add(action);
+			}
 		}
 		
 		//*** VOTRE CODE
@@ -65,10 +78,15 @@ public class QLearningAgent extends RLAgent {
 	@Override
 	public double getValeur(Etat e) {
 		double max = Double.NEGATIVE_INFINITY;
+		double qValeur;
 
+		if(qvaleurs.get(e) == null) {
+			return 0.;
+		}
 		for (Action a : qvaleurs.get(e).keySet()){
-			if (qvaleurs.get(e).get(a) > max){
-				max = qvaleurs.get(e).get(a);
+			qValeur = this.getQValeur(e, a);
+			if (qValeur > max){
+				max = qValeur;
 			}
 		}
 		return max;
@@ -77,8 +95,9 @@ public class QLearningAgent extends RLAgent {
 
 	@Override
 	public double getQValeur(Etat e, Action a) {
+		HashMap<Action, Double> mapEtat = this.qvaleurs.computeIfAbsent(e, k -> new HashMap<>());
 
-		return qvaleurs.get(e).get(a);
+		return mapEtat.computeIfAbsent(a, k -> 0.);
 	}
 	
 	
