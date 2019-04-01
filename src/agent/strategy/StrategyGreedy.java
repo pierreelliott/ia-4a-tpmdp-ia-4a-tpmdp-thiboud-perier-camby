@@ -1,5 +1,6 @@
 package agent.strategy;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -16,7 +17,7 @@ public class StrategyGreedy extends StrategyExploration{
 	 * parametre pour probabilite d'exploration
 	 */
 	protected double epsilon;
-	private Random rand=new Random();
+	private Random rand = new Random();
 	
 	
 	
@@ -27,15 +28,29 @@ public class StrategyGreedy extends StrategyExploration{
 
 	@Override
 	public Action getAction(Etat _e) {//renvoi null si _e absorbant
-		double d =rand.nextDouble();
-		List<Action> actions;
-		if (this.agent.getActionsLegales(_e).isEmpty()){
+		double d = rand.nextDouble();
+		List<Action> actionsLegales = this.agent.getActionsLegales(_e);
+		if (actionsLegales.isEmpty()){
 			return null;
 		}
-	
-		//VOTRE CODE ***
-		
-		return null;
+
+		int randomIndexAction;
+		List<Action> actionsPolitique = this.agent.getPolitique(_e);
+
+		if(d <= this.epsilon) {
+			// Si on est dans les 'epsilon %' de chances, on renvoie une action aléatoire
+			randomIndexAction = this.rand.nextInt(actionsLegales.size() - 1);
+			return actionsLegales.get(randomIndexAction);
+		} else {
+			// Sinon, on applique une politique greedy
+			// Et on prend donc une action aléatoire de la politique (qui fait partie des meilleures actions possibles)
+			if(actionsPolitique.size() == 1) {
+				return actionsPolitique.get(0);
+			} else {
+				randomIndexAction = this.rand.nextInt(actionsPolitique.size() - 1);
+				return actionsPolitique.get(randomIndexAction);
+			}
+		}
 	}
 
 	public double getEpsilon() {
