@@ -114,7 +114,12 @@ public class QLearningAgent extends RLAgent {
 				//vmax est la valeur de max pour tout s de V
 				//vmin est la valeur de min pour tout s de V
 				// ...
-		
+		this.vmax = this.qvaleurs.keySet().stream()
+				.mapToDouble(etat -> Collections.max(this.qvaleurs.get(etat).values()))
+				.max().orElse(0.);
+		this.vmin = this.qvaleurs.keySet().stream()
+				.mapToDouble(etat -> Collections.min(this.qvaleurs.get(etat).values()))
+				.min().orElse(0.);
 		
 		this.notifyObs();
 		
@@ -155,6 +160,7 @@ public class QLearningAgent extends RLAgent {
 	public void reset() {
 		super.reset();
 		//*** VOTRE CODE
+		this.qvaleurs = new HashMap<>();
 		
 		this.episodeNb =0;
 		this.notifyObs();
