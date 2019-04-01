@@ -39,7 +39,7 @@ public class StrategyGreedy extends StrategyExploration{
 
 		if(d <= this.epsilon) {
 			// Si on est dans les 'epsilon %' de chances, on renvoie une action aléatoire
-			randomIndexAction = this.rand.nextInt(actionsLegales.size() - 1);
+			randomIndexAction = this.rand.nextInt(actionsLegales.size());
 			return actionsLegales.get(randomIndexAction);
 		} else {
 			// Sinon, on applique une politique greedy
@@ -47,7 +47,7 @@ public class StrategyGreedy extends StrategyExploration{
 			if(actionsPolitique.size() == 1) {
 				return actionsPolitique.get(0);
 			} else {
-				randomIndexAction = this.rand.nextInt(actionsPolitique.size() - 1);
+				randomIndexAction = this.rand.nextInt(actionsPolitique.size());
 				return actionsPolitique.get(randomIndexAction);
 			}
 		}
