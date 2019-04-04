@@ -19,7 +19,14 @@ des récompenses va ˆetre trop forte, rendant ainsi la récompense proche plus 
 que celle disponible de l'autre cˆoté du pont.
 
 ## Question 5.2 Discount Grid
-*Donnez les valeurs des paramètres dans cahque cas et la justification de ces choix*
+
+1. Changement de récompense = -2.0, ainsi l'agent reçoit un malus pour chaque déplacement, il va donc avoir tendance à "se jeter" sur la récompense la plus proche, bien qu'elle soit plus faible que le +10.  
+
+2. Changement de récompense (=-1.0). Ainsi, l'agent reçois un malus pour chaque déplacement, ce qui favorise le chemin court, bien qu'il soit plus risqué.  
+
+3. Changement du facteur d'atténuation: $\gamma$ = 0.2. L'agent accorde plus d'importance aux récompenses proches qu'au récompenses futures et va donc préférer l'état absorbant de récompense +1.  
+
+4. Pour que l'agent évite les états absorbants, il suffit de mettre une récompense >10 sur les autres cases, ainsi, l'agent préférera rester loin des états absorbants pour continuer à recevoir de grosses récompenses.  
 
 
 # Rapport TP2
