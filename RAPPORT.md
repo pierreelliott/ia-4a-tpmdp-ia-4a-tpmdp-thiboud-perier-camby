@@ -1,6 +1,6 @@
-**Nom/Prénom Etudiant 1 :**
+**Nom/Prénom Etudiant 1 : *THIBOUD Pierre-Eliott*
 
-**Nom/Prénom Etudiant 2 :**
+**Nom/Prénom Etudiant 2 : *PERIER-CAMBY Julien*
 
 # Rapport TP1
 
@@ -77,3 +77,17 @@ mais 0% sur mediumGrid (en utilisant les coordonnées X,Y du pacman).
 
 ## Question 2:
 *Précisez et justifiez les fonctions caractéristiques que vous avez choisies pour la classe FeatureFunctionPacman (partie 2.3).*
+
+Nous utilisons initalement les features proposées dans l'enoncé:
+
+ - φ0(s,a)=1 : le biais
+
+ - φ1(s,a) : Nombre de fantômes voisins à la prochaine position du pacman
+
+ - φ2(s,a) : La prochaine position contient un dot
+
+ - φ3(s,a) : la distance (normée) du dot le plus proche de la prochaine position du pacman
+
+
+Nous obtenons de meilleurs résultats qu'avec nos états sur les smallGrid (+ de 90%), mais des résultats moins bons sur mediumGrid (12%).
+Néanmoins, nous pouvons observer un temps de calcul un peu plus rapide.
