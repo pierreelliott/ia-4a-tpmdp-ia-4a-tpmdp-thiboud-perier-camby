@@ -45,7 +45,7 @@ Nous avons testé les features suivantes :
  - __La distance et direction du fantome le plus proche (s'il est dans le champs de vision):__ indispensable pour pouvoir eviter les fantomes. Le fait de réduire 
  la position du fantome à une distance (*taille_du_scope*+1 possibilitées) et une direction (4 possibilités) permet de résuire le nombre d'états possibles.
  
- - __la direction du dot le plus proche__ (XXXXXXXXXXXXXXXXXXdans le champs de vision (sinon il va essayer de traverser tout alors qu'il peut peut-etre pas))
+ - __la direction du dot le plus proche__ 
  
  - __les directions sur lesquels le pacman peut se déplacer (celles où il n'y a pas de mur):__ permettent au pacman de pouvoir différencer un état où il peut atteindre un dot
  devant lui et un état ou il ne peut pas car il y a un mur entre lui et le dot.
