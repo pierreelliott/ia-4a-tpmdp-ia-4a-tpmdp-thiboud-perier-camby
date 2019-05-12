@@ -68,8 +68,7 @@ public class QLearningAgent extends RLAgent {
 				returnactions.add(action);
 			}
 		}
-		
-		//*** VOTRE CODE
+
 		return returnactions;
 		
 		
